@@ -141,6 +141,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Utility\SimpleMath\SimpleMath.cpp" />
+    <ClCompile Include="View\ImageView.cpp" />
     <ClCompile Include="View\Demo\ImGuiDemoView.cpp" />
     <ClCompile Include="Manager\Graphics.cpp" />
     <ClCompile Include="Manager\ImGuiManager.cpp" />
@@ -227,6 +229,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Utility\SimpleMath\SimpleMath.h" />
+    <ClInclude Include="View\ImageView.h" />
     <ClInclude Include="View\Demo\ImGuiDemoView.h" />
     <ClInclude Include="Manager\Graphics.h" />
     <ClInclude Include="Manager\ImGuiManager.h" />
@@ -254,6 +258,7 @@
     <ClInclude Include="Utility\ImPlot3D\implot3d_internal.h" />
     <ClInclude Include="Utility\ImPlot\implot.h" />
     <ClInclude Include="Utility\ImPlot\implot_internal.h" />
+    <ClInclude Include="zHeader\Types.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Utility\ImGuiNodeEditor\imgui_bezier_math.inl" />
@@ -261,6 +266,7 @@
     <None Include="Utility\ImGuiNodeEditor\imgui_node_editor_internal.inl" />
     <None Include="Utility\ImGuiNodeEditor\LICENSE" />
     <None Include="Utility\ImPlot3D\LICENSE" />
+    <None Include="Utility\SimpleMath\SimpleMath.inl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Utility\ImGui\LICENSE.txt" />

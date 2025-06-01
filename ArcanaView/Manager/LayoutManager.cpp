@@ -4,6 +4,7 @@
 #include "View/Demo/ImGuiDemoView.h"
 #include "View/Demo/ImPlotDemoView.h"
 #include "View/Demo/ImPlot3dDemoView.h"
+#include "View/ImageView.h"
 
 void LayoutManager::Init()
 {
@@ -27,6 +28,21 @@ void LayoutManager::Update()
 	{
 		uiComponent->Update();
 	}
+
+	for (auto it = _imageViewComponents.begin(); it != _imageViewComponents.end();) 
+	{
+		std::shared_ptr<UIComponentBase> imageView = (*it).second;
+		bool* isVisible = imageView->IsVisible();
+		if (*isVisible == false)
+		{
+			_imageViewComponents.erase(it++);
+		}
+		else
+		{
+			imageView->Update();
+			++it;
+		}
+	}
 }
 
 void LayoutManager::Render()
@@ -35,11 +51,22 @@ void LayoutManager::Render()
 	{
 		uiComponent->Render();
 	}
+
+	for (auto& imageView : _imageViewComponents)
+	{
+		(imageView.second)->Render();
+	}
 }
 
 void LayoutManager::Cleanup()
 {
 	_uiComponents.clear();
+}
+
+void LayoutManager::AddImageView(const std::wstring& imageFile)
+{
+	std::shared_ptr<ImageView> imageView = std::make_shared<ImageView>(imageFile);
+	_imageViewComponents.insert({ imageView->GetTitle(), imageView });
 }
 
 void LayoutManager::ConstructLayout()

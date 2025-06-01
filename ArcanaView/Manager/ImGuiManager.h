@@ -2,6 +2,8 @@
 
 class ImGuiManager
 {
+	DECLARE_SINGLETON(ImGuiManager)
+
 public:
 	void Init(HWND hwnd);
 	void Update();

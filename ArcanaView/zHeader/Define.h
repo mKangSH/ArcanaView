@@ -19,3 +19,5 @@ public:									\
 #define GRAPHICS		GET_SINGLE(Graphics)
 #define DEVICE			GRAPHICS->GetDevice()
 #define DEVICECONTEXT	GRAPHICS->GetDeviceContext()
+#define GUI				GET_SINGLE(ImGuiManager)
+#define LAYOUT			GET_SINGLE(LayoutManager)

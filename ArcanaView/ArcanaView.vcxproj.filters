@@ -96,6 +96,12 @@
     <ClCompile Include="View\Demo\ImPlot3dDemoView.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="View\ImageView.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\SimpleMath\SimpleMath.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility\ImGui\imgui_impl_dx11.h">
@@ -179,6 +185,15 @@
     <ClInclude Include="View\Demo\ImPlot3dDemoView.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="View\ImageView.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="zHeader\Types.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\SimpleMath\SimpleMath.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Utility\ImGuiNodeEditor\imgui_bezier_math.inl">
@@ -192,6 +207,9 @@
     </None>
     <None Include="Utility\ImGuiNodeEditor\LICENSE" />
     <None Include="Utility\ImPlot3D\LICENSE" />
+    <None Include="Utility\SimpleMath\SimpleMath.inl">
+      <Filter>헤더 파일</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Utility\ImPlot\LICENSE.txt" />

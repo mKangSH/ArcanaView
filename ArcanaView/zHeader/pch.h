@@ -2,6 +2,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 
+#include "Types.h"
 #include "Define.h"
 
 // STL
@@ -53,3 +54,5 @@ using namespace Microsoft::WRL;
 
 // Managers
 #include "Manager/Graphics.h"
+#include "Manager/ImGuiManager.h"
+#include "Manager/LayoutManager.h"
