@@ -18,6 +18,8 @@ private:
 	void Cleanup();
 	void CreateImageTexture();
 
+	void UpdateDrawList();
+
 private:
 	std::wstring _imageFile = L""; // Path to the image file
 
@@ -28,6 +30,11 @@ private:
 private:
 	ImVec2 _mousePos = { 0.0f, 0.0f };
 	ImVec2 _contentRegionSize = { 0.0f, 0.0f };
+
+private:
+	ImVec2 _lastMousePos = { 0.0f, 0.0f };
+	bool _isLineTool = false;
+	ImGuiWindowFlags _windowFlags = ImGuiWindowFlags_None;;
 
 public:
 	static uint64 ImageViewId;
