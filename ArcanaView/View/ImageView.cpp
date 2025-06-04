@@ -22,7 +22,15 @@ void ImageView::Update()
 {
 	if (_isVisible)
 	{
+		UpdateWindowInfo();
+
+		ImGui::Begin(_title.c_str(), &_isVisible, _windowFlags);
+
 		Draw();
+
+		UpdateDrawList();
+
+		ImGui::End();
 	}
 }
 
@@ -31,14 +39,23 @@ void ImageView::Render()
 
 }
 
-void ImageView::Draw()
+void ImageView::UpdateWindowInfo()
 {
-	ImVec2 contentRegionSize = ImGui::GetWindowSize();
+	// 부모 윈도우의 위치를 이용하여 현재 윈도우 포지션을 세팅한다.
+	ImVec2 parentWindowPos = ImGui::GetWindowPos();
+	parentWindowPos.x += _windowPos.x;
+	parentWindowPos.y += _windowPos.y;
+	ImGui::SetNextWindowPos(parentWindowPos, ImGuiCond_FirstUseEver);
+
+	float titleBarHeight = ImGui::GetFontSize() + ImGui::GetFrameHeight() * 2;
 
 	ImVec2 mousePos = ImGui::GetMousePos();
-	if (ImGui::IsMouseDown(ImGuiMouseButton_Left))
-		//&& (mousePos.x >= screenPos.x && mousePos.x < (screenPos.x + contentRegionSize.x)) 
-		//&& (mousePos.y >= screenPos.y && mousePos.y < (screenPos.y + contentRegionSize.y)))
+	bool isMouseInContent = mousePos.x >= parentWindowPos.x &&
+							mousePos.x < parentWindowPos.x + _windowContentSize.x &&
+							mousePos.y >= parentWindowPos.y + titleBarHeight &&
+							mousePos.y < parentWindowPos.y + _windowContentSize.y;
+
+	if (ImGui::IsMouseDown(ImGuiMouseButton_Left) && isMouseInContent)
 	{
 		_windowFlags |= ImGuiWindowFlags_NoMove;
 	}
@@ -46,10 +63,13 @@ void ImageView::Draw()
 	{
 		_windowFlags &= ~ImGuiWindowFlags_NoMove;
 	}
+}
 
-	ImGui::Begin(_title.c_str(), &_isVisible, _windowFlags);
-	
-	if (ImGui::IsWindowHovered())
+void ImageView::Draw()
+{
+	_windowContentSize = ImGui::GetContentRegionAvail();
+
+	if (ImGui::IsWindowHovered() && _contentRegionSize.x > 0 && _contentRegionSize.y > 0)
 	{
 		_mousePos.x = std::clamp(_mousePos.x, 0.0f, _contentRegionSize.x - 1);
 		_mousePos.y = std::clamp(_mousePos.y, 0.0f, _contentRegionSize.y - 1);
@@ -81,10 +101,6 @@ void ImageView::Draw()
 
 		ImGui::Text("X: %f Y: %f Value: %u %u %u %u", _mousePos.x, _mousePos.y, 0, 0, 0, 0);
 	}
-
-	UpdateDrawList();
-
-	ImGui::End();
 }
 
 void ImageView::Cleanup()
@@ -123,26 +139,6 @@ void ImageView::UpdateDrawList()
 	drawList->AddImage(reinterpret_cast<ImTextureID>(_shaderResourceView.Get()), p0, p1);
 
 	ImVec2 mousePos = ImGui::GetMousePos();
-	if (ImGui::IsMouseDown(ImGuiMouseButton_Left) && 
-		(mousePos.x >= p0.x && mousePos.x < p1.x) &&
-		(mousePos.y >= p0.y && mousePos.y < p1.y))
-	{
-		if (_isLineTool == false)
-		{
-			_isLineTool = true;
-			_lastMousePos = ImGui::GetMousePos();
-		}
-		else 
-		{
-			ImVec2 position = ImGui::GetMousePos();
-			drawList->AddLine(_lastMousePos, position, ImU32(0xFFFFFFFF));
-		}
-	}
-	else if (ImGui::IsMouseReleased(ImGuiMouseButton_Left))
-	{
-		_isLineTool = false;
-	}
-
 	_mousePos = ImGui::GetMousePos();
 
 	_mousePos.x -= p0.x;
