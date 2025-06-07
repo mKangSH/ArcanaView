@@ -1,6 +1,11 @@
 #pragma once
 #include "UIComponentBase.h"
 
+struct PixelValue
+{
+	uint8 R, G, B, A;
+};
+
 class ImageView : public UIComponentBase
 {
 	using Super = UIComponentBase;
@@ -14,9 +19,15 @@ public:
 	void Render() override;
 
 private:
+	void UpdateWindowInfo();
+
 	void Draw();
 	void Cleanup();
+
 	void CreateImageTexture();
+
+	void DrawImageValue();
+	void UpdateDrawList();
 
 private:
 	std::wstring _imageFile = L""; // Path to the image file
@@ -26,9 +37,15 @@ private:
 	ComPtr<ID3D11ShaderResourceView> _shaderResourceView = nullptr;
 
 private:
-	ImVec2 _mousePos = { 0.0f, 0.0f };
-	ImVec2 _contentRegionSize = { 0.0f, 0.0f };
+	ImVec2 _windowPos = { 0.0f, 0.0f };
+	ImVec2 _windowSize = { 200.0f, 200.0f };
+	ImVec2 _windowContentSize = { 100.0f, 100.0f };
+	ImGuiWindowFlags _windowFlags = ImGuiWindowFlags_None | ImGuiWindowFlags_NoSavedSettings;
+
+	ImageTool _imageTool;
 
 public:
 	static uint64 ImageViewId;
 };
+
+PixelValue GetPixelValue(const uint8* pixels, uint32 pixelIndex, const DXGI_FORMAT& format);
