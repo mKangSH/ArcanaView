@@ -148,10 +148,8 @@ void ImageView::UpdateDrawList()
 	p1.x += p0.x;
 	p1.y += p0.y;
 
-	static ImVec2 uv0 = ImVec2(0, 0);
-	static ImVec2 uv1 = ImVec2(1, 1);
-
 	// Zoom the image using uv coordinates with mouse position as the center of zoom when the mouse wheel is scrolled
+	if (ImGui::IsWindowHovered())
 	{
 		ImVec2 mousePos = ImGui::GetMousePos();
 		ImVec2 mouseUV = ImVec2((mousePos.x - p0.x) / (p1.x - p0.x), (mousePos.y - p0.y) / (p1.y - p0.y));
@@ -172,27 +170,27 @@ void ImageView::UpdateDrawList()
 
 		if (zoomFactor != 1.0f)
 		{
-			ImVec2 oldUVSize = ImVec2(uv1.x - uv0.x, uv1.y - uv0.y);
+			ImVec2 oldUVSize = ImVec2(_uv1.x - _uv0.x, _uv1.y - _uv0.y);
 			ImVec2 newUVSize = ImVec2(oldUVSize.x * zoomFactor, oldUVSize.y * zoomFactor);
 
-			ImVec2 texMouse = ImVec2(uv0.x + mouseUV.x * oldUVSize.x, uv0.y + mouseUV.y * oldUVSize.y);
+			ImVec2 texMouse = ImVec2(_uv0.x + mouseUV.x * oldUVSize.x, _uv0.y + mouseUV.y * oldUVSize.y);
 			
-			uv0.x = texMouse.x - mouseUV.x * newUVSize.x;
-			uv0.y = texMouse.y - mouseUV.y * newUVSize.y;
+			_uv0.x = texMouse.x - mouseUV.x * newUVSize.x;
+			_uv0.y = texMouse.y - mouseUV.y * newUVSize.y;
 
-			uv1.x = uv0.x + newUVSize.x;
-			uv1.y = uv0.y + newUVSize.y;
+			_uv1.x = _uv0.x + newUVSize.x;
+			_uv1.y = _uv0.y + newUVSize.y;
 		}
 	}
 
 	// Clamp UV coordinates to [0, 1] range
-	uv0.x = std::clamp(uv0.x, 0.0f, 1.0f);
-	uv0.y = std::clamp(uv0.y, 0.0f, 1.0f);
+	_uv0.x = std::clamp(_uv0.x, 0.0f, 1.0f);
+	_uv0.y = std::clamp(_uv0.y, 0.0f, 1.0f);
 
-	uv1.x = std::clamp(uv1.x, 0.0f, 1.0f);
-	uv1.y = std::clamp(uv1.y, 0.0f, 1.0f);
+	_uv1.x = std::clamp(_uv1.x, 0.0f, 1.0f);
+	_uv1.y = std::clamp(_uv1.y, 0.0f, 1.0f);
 
-	drawList->AddImage(reinterpret_cast<ImTextureID>(_shaderResourceView.Get()), p0, p1, uv0, uv1);
+	drawList->AddImage(reinterpret_cast<ImTextureID>(_shaderResourceView.Get()), p0, p1, _uv0, _uv1);
 
 	_imageTool.Update(drawList);
 }
