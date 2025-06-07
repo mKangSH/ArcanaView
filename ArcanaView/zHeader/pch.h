@@ -42,6 +42,9 @@ using namespace Microsoft::WRL;
 #include "Utility/ImPlot/implot.h"
 #include "Utility/ImPlot3D/implot3d.h"
 
+// Utility
+#include "Utility/ImageTool/ImageTool.h"
+
 // Libs
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")

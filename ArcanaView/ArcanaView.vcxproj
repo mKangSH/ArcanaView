@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Utility\ImageTool\ImageTool.cpp" />
     <ClCompile Include="Utility\SimpleMath\SimpleMath.cpp" />
     <ClCompile Include="View\ImageView.cpp" />
     <ClCompile Include="View\Demo\ImGuiDemoView.cpp" />
@@ -229,6 +230,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Utility\ImageTool\ImageTool.h" />
     <ClInclude Include="Utility\SimpleMath\SimpleMath.h" />
     <ClInclude Include="View\ImageView.h" />
     <ClInclude Include="View\Demo\ImGuiDemoView.h" />
