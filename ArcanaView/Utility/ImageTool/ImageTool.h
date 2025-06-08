@@ -36,8 +36,13 @@ public:
 	void Update(ImDrawList* drawList);
 
 private:
+	void DrawLine(ImDrawList* drawList);
+	void DrawRectangle(ImDrawList* drawList);
+
+private:
 	ImageToolType _type;
-	ImVec2 _startPos = ImVec2(0.0f, 0.0f);
-	ImVec2 _endPos = ImVec2(0.0f, 0.0f);
+
+	ImVec2 _startPosNormalized = ImVec2(0.0f, 0.0f);
+	ImVec2 _endPosNormalized = ImVec2(0.0f, 0.0f);
 };
 

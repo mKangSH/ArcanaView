@@ -41,8 +41,8 @@ private:
 	ImVec2 _uv1 = ImVec2(1, 1);
 
 private:
-	ImVec2 _windowPos = { 0.0f, 0.0f };
-	ImVec2 _windowSize = { 200.0f, 200.0f };
+	ImVec2 _windowPos = { 300.0f, 300.0f };
+	ImVec2 _windowSize = { 400.0f, 400.0f };
 	ImVec2 _windowContentSize = { 100.0f, 100.0f };
 	ImGuiWindowFlags _windowFlags = ImGuiWindowFlags_None | ImGuiWindowFlags_NoSavedSettings;
 
