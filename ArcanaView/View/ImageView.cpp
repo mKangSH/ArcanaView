@@ -46,10 +46,12 @@ void ImageView::UpdateWindowInfo()
 	ImGui::SetNextWindowPos(_windowPos, ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(_windowSize, ImGuiCond_FirstUseEver);
 
+	float textlineWithSpacing = ImGui::GetTextLineHeightWithSpacing();
+	
 	bool isMouseInContent = mousePos.x >= _windowPos.x &&
 							mousePos.x < _windowPos.x + _windowContentSize.x &&
 							mousePos.y >= _windowPos.y &&
-							mousePos.y < _windowPos.y + _windowContentSize.y;
+							mousePos.y < _windowPos.y + _windowContentSize.y + textlineWithSpacing;
 
 	if (ImGui::IsMouseDown(ImGuiMouseButton_Left) && isMouseInContent)
 	{

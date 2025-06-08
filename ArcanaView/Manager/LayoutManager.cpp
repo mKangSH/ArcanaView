@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "LayoutManager.h"
 #include "View/UIComponentBase.h"
+#include "View/HelpView.h"
 #include "View/Demo/ImGuiDemoView.h"
 #include "View/Demo/ImPlotDemoView.h"
 #include "View/Demo/ImPlot3dDemoView.h"
@@ -16,12 +17,15 @@ void LayoutManager::Init()
 
 	std::shared_ptr<ImPlot3dDemoView> imPlot3dDemoView = std::make_shared<ImPlot3dDemoView>();
 	_uiComponents.push_back(imPlot3dDemoView);
+
+	std::shared_ptr<HelpView> helpView = std::make_shared<HelpView>();
+	_uiComponents.push_back(helpView);
 }
 
 void LayoutManager::Update()
 {
 	ImGui::DockSpaceOverViewport();
-
+	
 	ConstructLayout();
 
 	for (auto uiComponent : _uiComponents)

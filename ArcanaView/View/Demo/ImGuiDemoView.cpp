@@ -3,6 +3,7 @@
 
 ImGuiDemoView::ImGuiDemoView() : Super("ImGui Demo Window")
 {
+	_isVisible = false;
 }
 
 ImGuiDemoView::~ImGuiDemoView()

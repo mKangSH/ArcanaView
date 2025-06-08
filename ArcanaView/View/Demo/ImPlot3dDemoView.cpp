@@ -3,6 +3,7 @@
 
 ImPlot3dDemoView::ImPlot3dDemoView() : Super("ImPlot3D Demo Window")
 {
+	_isVisible = false;
 }
 
 ImPlot3dDemoView::~ImPlot3dDemoView()
