@@ -108,6 +108,12 @@
     <ClCompile Include="View\HelpView.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="View\VisualSequenceGraph\VisualSequenceGraph.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="View\VisualSequenceGraph\VSGType.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility\ImGui\imgui_impl_dx11.h">
@@ -204,6 +210,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="View\HelpView.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="View\VisualSequenceGraph\VisualSequenceGraph.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="View\VisualSequenceGraph\VSGType.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

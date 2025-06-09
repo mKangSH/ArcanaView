@@ -41,6 +41,7 @@ using namespace Microsoft::WRL;
 #include "Utility/ImGui/imgui.h"
 #include "Utility/ImPlot/implot.h"
 #include "Utility/ImPlot3D/implot3d.h"
+#include "Utility/ImGuiNodeEditor/imgui_node_editor.h"
 
 // Utility
 #include "Utility/ImageTool/ImageTool.h"

@@ -102,7 +102,9 @@ void ImageView::DrawImageValue()
 {
 	ImGui::RadioButton("None", (int*)&_imageTool.GetType(), 0); ImGui::SameLine();
 	ImGui::RadioButton("Line", (int*)&_imageTool.GetType(), 1); ImGui::SameLine();
-	ImGui::RadioButton("Rectangle", (int*)&_imageTool.GetType(), 2);
+	ImGui::RadioButton("Rectangle", (int*)&_imageTool.GetType(), 2); ImGui::SameLine();
+
+	ImGui::ColorEdit4("BrushToolColor", _imageTool.GetColor(), ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel);
 
 	ImVec2 mousePos = ImGui::GetMousePos();
 	ImVec2 windowTopLeft = ImGui::GetCursorScreenPos();
