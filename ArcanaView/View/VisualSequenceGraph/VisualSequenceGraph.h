@@ -19,15 +19,18 @@ private:
 	void Cleanup();
 
 private:
-	Node beginNode = { 1, 100, 101 };        // Begin(Ãâ·Â ÇÉ¸¸)
-	Node funcNode = { 2, 201, 202 };    // Function(ÀÔ·Â/Ãâ·Â ÇÉ)
+	void DrawNodes();
 
-	Link link = { 1, 101, 201 }; // BeginÀÇ Ãâ·Â ÇÉ ¡æ FunctionÀÇ ÀÔ·Â ÇÉ
+private:
+	ImColor GetIconColor(PinType type);
+	void DrawPinIcon(const Pin& pin, bool connected, int alpha);
+	bool IsPinLinked(ed::PinId id);
 
+private:
 	ed::EditorContext* _editorContext = nullptr;
 
 private:
-	void ExecuteFromBegin(const Node& beginNode, const std::vector<Node>& nodes, const std::vector<Link>& links);
-	void CallMyFunction();
+	std::vector<std::shared_ptr<Node>> _nodes;
+	std::vector<std::shared_ptr<Link>> _links;
 };
 

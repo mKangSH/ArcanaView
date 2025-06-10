@@ -57,7 +57,7 @@ void ImageView::UpdateWindowInfo()
 	{
 		_windowFlags |= ImGuiWindowFlags_NoMove;
 	}
-	else if (ImGui::IsMouseReleasedWithDelay(ImGuiMouseButton_Left, 0.38))
+	else if (ImGui::IsMouseReleased(ImGuiMouseButton_Left))
 	{
 		_windowFlags &= ~ImGuiWindowFlags_NoMove;
 	}
