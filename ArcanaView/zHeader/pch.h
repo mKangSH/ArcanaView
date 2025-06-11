@@ -1,6 +1,7 @@
 #pragma once
 
 #define WIN32_LEAN_AND_MEAN
+#define IMGUI_DEFINE_MATH_OPERATORS
 
 #include "Types.h"
 #include "Define.h"
