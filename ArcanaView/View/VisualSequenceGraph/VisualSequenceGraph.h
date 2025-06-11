@@ -20,6 +20,8 @@ private:
 
 private:
 	void DrawNodes();
+	void DrawLinks();
+	Pin* FindPin(ed::PinId id);
 
 private:
 	ImColor GetIconColor(PinType type);

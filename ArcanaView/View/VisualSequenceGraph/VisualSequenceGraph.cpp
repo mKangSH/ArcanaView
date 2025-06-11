@@ -37,6 +37,9 @@ void VisualSequenceGraph::Update()
 	{
 		ImGui::Begin(_title.c_str(), &_isVisible);
 
+        ImGui::ArrowButton("Start", ImGuiDir_Right); ImGui::SameLine();
+        ImGui::Button("Test");
+
 		Draw();
 
 		ImGui::End();
@@ -55,6 +58,8 @@ void VisualSequenceGraph::Draw()
 	ed::Begin(_title.c_str(), ImVec2(0.0, 0.0f));
 
 	DrawNodes();
+
+    DrawLinks();
 
 	ed::End();
 
@@ -213,18 +218,94 @@ void VisualSequenceGraph::DrawNodes()
         }
 
         builder.End();
-    }
+    }   
+}
 
+void VisualSequenceGraph::DrawLinks()
+{
     for (auto& link : _links)
     {
         ed::Link(link->ID, link->InputPinID, link->OutputPinID, link->Color, 2.0f);
     }
-    
+
     if (ed::BeginCreate(ImColor(255, 255, 255), 2.0f))
     {
-    }
+        ed::PinId startPinId = 0;
+        ed::PinId endPinId = 0;
 
+        if (ed::QueryNewLink(&startPinId, &endPinId))
+        {
+            Pin* startPin = FindPin(startPinId);
+            Pin* endPin = FindPin(endPinId);
+
+            Pin* newLinkPin = startPin ? startPin : endPin;
+
+            if (startPin && endPin)
+            {
+                if (startPin->Kind == PinKind::Input)
+                {
+                    std::swap(startPin, endPin);
+                    std::swap(startPinId, endPinId);
+                }
+
+                if (endPin == startPin)
+                {
+                    ed::RejectNewItem(ImColor(255, 0, 0), 2.0f);
+                }
+                else if (endPin->Kind == startPin->Kind)
+                {
+                    ed::RejectNewItem(ImColor(255, 0, 0), 2.0f);
+                }
+                //else if (endPin->Node == startPin->Node)
+                //{
+                //    showLabel("x Cannot connect to self", ImColor(45, 32, 32, 180));
+                //    ed::RejectNewItem(ImColor(255, 0, 0), 1.0f);
+                //}
+                else if (endPin->Type != startPin->Type)
+                {
+                    ed::RejectNewItem(ImColor(255, 128, 128), 1.0f);
+                }
+                else
+                {
+                    if (ed::AcceptNewItem(ImColor(128, 255, 128), 4.0f))
+                    {
+                        _links.emplace_back(std::make_shared<Link>(Link::GetNextId(), startPinId, endPinId));
+                        _links.back()->Color = GetIconColor(startPin->Type);
+                    }
+                }
+            }
+        }
+    }
     ed::EndCreate();
+}
+
+Pin* VisualSequenceGraph::FindPin(ed::PinId id)
+{
+    if (id)
+    {
+        for (auto& node : _nodes)
+        {
+            for (auto& pin : node->Inputs)
+            {
+                if (pin.ID == id)
+                {
+                    return &pin;
+                }
+            }
+
+            for (auto& pin : node->Outputs)
+            {
+                if (pin.ID == id)
+                {
+                    return &pin;
+                }
+            }
+        }
+    }
+    else
+    {
+        return nullptr;
+    }
 }
 
 ImColor VisualSequenceGraph::GetIconColor(PinType type)

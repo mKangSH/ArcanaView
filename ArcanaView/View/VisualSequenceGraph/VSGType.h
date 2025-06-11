@@ -95,8 +95,8 @@ struct Link
 	ed::PinId OutputPinID;
     ImColor Color;
 
-    Link(ed::LinkId id, ed::PinId inputPinId, ed::PinId outputPinId, ImColor color = ImColor(255, 255, 255))
-        : ID(id), InputPinID(inputPinId), OutputPinID(outputPinId), Color(color)
+    Link(ed::LinkId id, ed::PinId inputPinId, ed::PinId outputPinId)
+        : ID(id), InputPinID(inputPinId), OutputPinID(outputPinId), Color(255, 255, 255)
     {
     }
 
