@@ -61,6 +61,8 @@ void VisualSequenceGraph::Draw()
 
     DrawLinks();
 
+    DrawPopup();
+
 	ed::End();
 
 	ed::SetCurrentEditor(nullptr);
@@ -275,8 +277,160 @@ void VisualSequenceGraph::DrawLinks()
                 }
             }
         }
+
+        ed::PinId pinId = 0;
+        if (ed::QueryNewNode(&pinId))
+        {
+            Pin* newLinkPin = FindPin(pinId);
+
+            if (ed::AcceptNewItem())
+            {
+                Pin* newNodeLinkPin = FindPin(pinId);
+                newLinkPin = nullptr;
+                ed::Suspend();
+                ImGui::OpenPopup("Create New Node");
+                ed::Resume();
+            }
+        }
+
+        else
+        {
+
+        }
     }
     ed::EndCreate();
+
+    // TODO Delete
+    if (ed::BeginDelete())
+    {
+
+    }
+    ed::EndDelete();
+}
+
+void VisualSequenceGraph::DrawPopup()
+{
+    auto openPopupPosition = ImGui::GetMousePos();
+
+    ed::Suspend();
+    if (ed::ShowBackgroundContextMenu())
+    {
+        ImGui::OpenPopup("Create New Node");
+    }
+    ed::Resume();
+
+    ed::Suspend();
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 8));
+    if (ImGui::BeginPopup("Create New Node"))
+    {
+        auto newNodePostion = openPopupPosition;
+        //ImGui::SetCursorScreenPos(ImGui::GetMousePosOnOpeningCurrentPopup());
+
+        //auto drawList = ImGui::GetWindowDrawList();
+        //drawList->AddCircleFilled(ImGui::GetMousePosOnOpeningCurrentPopup(), 10.0f, 0xFFFF00FF);
+
+        std::shared_ptr<Node> node = nullptr;
+        if (ImGui::MenuItem("Input Action"))
+        {
+            node = NodeGenerator::GenerateInputActionNode();
+        }
+            
+        if (ImGui::MenuItem("Output Action"))
+        {
+            node = NodeGenerator::GenerateOutputActionNode();
+        }
+            
+        if (ImGui::MenuItem("Branch"))
+        {
+            node = NodeGenerator::GenerateBranchNode();
+        }
+            
+        if (ImGui::MenuItem("Do N"))
+        {
+            node = NodeGenerator::GenerateDoNNode();
+        }
+            
+        if (ImGui::MenuItem("Set Timer"))
+        {
+            node = NodeGenerator::GenerateSetTimerNode();
+        }
+            
+        if (ImGui::MenuItem("Less"))
+        {
+            node = NodeGenerator::GenerateLessNode();
+        }
+            
+        if (ImGui::MenuItem("Weird"))
+        {
+            node = NodeGenerator::GenerateWeirdNode();
+        }
+            
+        if (ImGui::MenuItem("Trace by Channel"))
+        {
+            node = NodeGenerator::GenerateTraceByChannelNode();
+        }
+            
+        if (ImGui::MenuItem("Print String"))
+        {
+            node = NodeGenerator::GeneratePrintStringNode();
+        }
+            
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Comment"))
+        {
+            node = NodeGenerator::GenerateComment();
+        }
+            
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Sequence"))
+        {
+            node = NodeGenerator::GenerateTreeSequenceNode();
+        }
+            
+        if (ImGui::MenuItem("Move To"))
+        {
+            node = NodeGenerator::GenerateTreeTaskNode();
+        }
+            
+        if (ImGui::MenuItem("Random Wait"))
+        {
+            node = NodeGenerator::GenerateTreeTask2Node();
+        }
+            
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Message"))
+        {
+            node = NodeGenerator::GenerateMessageNode();
+        }
+            
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Transform"))
+        {
+            node = NodeGenerator::GenerateHoudiniTransformNode();
+        }
+            
+        if (ImGui::MenuItem("Group"))
+        {
+            node = NodeGenerator::GenerateHoudiniGroupNode();
+        }
+
+        if (node)
+        {
+            NodeGenerator::BuildNode(node);
+            ed::SetNodePosition(node->ID, newNodePostion);
+
+            _nodes.push_back(node);
+        }
+
+        ImGui::EndPopup();
+    }
+
+    ImGui::PopStyleVar();
+    ed::Resume();
 }
 
 Pin* VisualSequenceGraph::FindPin(ed::PinId id)

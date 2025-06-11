@@ -21,7 +21,7 @@ public:
 	static std::shared_ptr<Node> GenerateHoudiniTransformNode();
 	static std::shared_ptr<Node> GenerateHoudiniGroupNode();
 
-private:
+public:
 	static void BuildNode(std::shared_ptr<Node> node);
 };
 

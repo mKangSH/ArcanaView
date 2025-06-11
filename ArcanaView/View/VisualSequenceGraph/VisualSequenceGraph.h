@@ -21,6 +21,7 @@ private:
 private:
 	void DrawNodes();
 	void DrawLinks();
+	void DrawPopup();
 	Pin* FindPin(ed::PinId id);
 
 private:
