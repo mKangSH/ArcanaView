@@ -19,6 +19,9 @@ private:
 	void Cleanup();
 
 private:
+	void ShowToolbar();
+
+private:
 	void DrawNodes();
 	void DrawBlueprintNode();
 	void DrawTreeNode();

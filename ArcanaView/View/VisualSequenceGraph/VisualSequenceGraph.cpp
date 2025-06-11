@@ -38,13 +38,17 @@ void VisualSequenceGraph::Update()
 {
 	if (_isVisible)
 	{
+        ed::SetCurrentEditor(_editorContext);
+
 		ImGui::Begin(_title.c_str(), &_isVisible);
 
-        ImGui::ArrowButton("Start", ImGuiDir_Right); ImGui::SameLine();
+        ShowToolbar();
 
 		Draw();
 
 		ImGui::End();
+
+        ed::SetCurrentEditor(nullptr);
 	}
 }
 
@@ -55,8 +59,6 @@ void VisualSequenceGraph::Render()
 
 void VisualSequenceGraph::Draw()
 {
-	ed::SetCurrentEditor(_editorContext);
-
 	ed::Begin(_title.c_str(), ImVec2(0.0, 0.0f));
 
 	DrawNodes();
@@ -66,13 +68,40 @@ void VisualSequenceGraph::Draw()
     DrawPopup();
 
 	ed::End();
-
-	ed::SetCurrentEditor(nullptr);
 }
 
 void VisualSequenceGraph::Cleanup()
 {
 
+}
+
+void VisualSequenceGraph::ShowToolbar()
+{
+    ImGui::ArrowButton("Start", ImGuiDir_Right);
+    ImGui::SameLine();
+
+    if (ImGui::Button("Show Flow"))
+    {
+        for (auto& link : _links)
+        {
+            ed::Flow(link->ID);
+        }
+    }
+    ImGui::SameLine();
+
+    if (ImGui::Button("Zoom to Content"))
+    {
+        ed::NavigateToContent();
+    }
+
+
+    if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Z)))
+    {
+        for (auto& link : _links)
+        {
+            ed::Flow(link->ID);
+        }
+    }
 }
 
 void VisualSequenceGraph::DrawNodes()
