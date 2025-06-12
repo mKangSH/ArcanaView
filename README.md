@@ -11,10 +11,14 @@
 
 # 사용된 언어, 프레임워크, 라이브러리
  - C++
- - ImGui(1.91.9b-docking)
+ - Imgui(thedmd : docking-layout branch url: https://github.com/thedmd/imgui/tree/docking-layout)
  - imgui-node-editor(master branch)
  - implot(master branch)
  - implot3d(master branch)
 
+# Program Concept
+<img src="https://github.com/mKangSH/ArcanaView/blob/master/ProgramConcept/Overview.png" width="600" height="300"/>
+
 # 문제점
- - Line 및 Rectangle 의 위치가 상대적으로 계산되지 않는 문제
+ - Houdini Style input/output pin 보이지 않는 문제
+
