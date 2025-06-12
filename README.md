@@ -17,6 +17,8 @@
  - implot3d(master branch)
 
 # Program Concept
+ - Program concept capture image
+ - Image view => ROI => ROI Processing (Visual Sequence Graph)
 <img src="https://github.com/mKangSH/ArcanaView/blob/master/ProgramConcept/Overview.png" width="600" height="300"/>
 
 # 문제점
