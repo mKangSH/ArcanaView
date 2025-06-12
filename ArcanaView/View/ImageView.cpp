@@ -57,7 +57,7 @@ void ImageView::UpdateWindowInfo()
 	{
 		_windowFlags |= ImGuiWindowFlags_NoMove;
 	}
-	else if (ImGui::IsMouseReleasedWithDelay(ImGuiMouseButton_Left, 0.38))
+	else if (ImGui::IsMouseReleased(ImGuiMouseButton_Left))
 	{
 		_windowFlags &= ~ImGuiWindowFlags_NoMove;
 	}
@@ -102,7 +102,9 @@ void ImageView::DrawImageValue()
 {
 	ImGui::RadioButton("None", (int*)&_imageTool.GetType(), 0); ImGui::SameLine();
 	ImGui::RadioButton("Line", (int*)&_imageTool.GetType(), 1); ImGui::SameLine();
-	ImGui::RadioButton("Rectangle", (int*)&_imageTool.GetType(), 2);
+	ImGui::RadioButton("Rectangle", (int*)&_imageTool.GetType(), 2); ImGui::SameLine();
+
+	ImGui::ColorEdit4("BrushToolColor", _imageTool.GetColor(), ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel);
 
 	ImVec2 mousePos = ImGui::GetMousePos();
 	ImVec2 windowTopLeft = ImGui::GetCursorScreenPos();
@@ -193,6 +195,19 @@ void ImageView::UpdateDrawList()
 	_uv1.y = std::clamp(_uv1.y, 0.0f, 1.0f);
 
 	drawList->AddImage(reinterpret_cast<ImTextureID>(_shaderResourceView.Get()), p0, p1, _uv0, _uv1);
+
+	if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+	{
+		ImGui::OpenPopup("Image Processing");
+	}
+
+	if (ImGui::BeginPopup("Image Processing"))
+	{
+		if (ImGui::MenuItem("Promote variable"))
+		{
+		}
+		ImGui::EndPopup();
+	}
 
 	_imageTool.Update(drawList);
 }

@@ -2,6 +2,7 @@
 #include "LayoutManager.h"
 #include "View/UIComponentBase.h"
 #include "View/HelpView.h"
+#include "View/VisualSequenceGraph/VisualSequenceGraph.h"
 #include "View/Demo/ImGuiDemoView.h"
 #include "View/Demo/ImPlotDemoView.h"
 #include "View/Demo/ImPlot3dDemoView.h"
@@ -20,6 +21,9 @@ void LayoutManager::Init()
 
 	std::shared_ptr<HelpView> helpView = std::make_shared<HelpView>();
 	_uiComponents.push_back(helpView);
+
+	std::shared_ptr<VisualSequenceGraph> visualSequenceGraph = std::make_shared<VisualSequenceGraph>();
+	_uiComponents.push_back(visualSequenceGraph);
 }
 
 void LayoutManager::Update()

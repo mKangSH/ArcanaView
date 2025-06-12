@@ -1,6 +1,7 @@
 #pragma once
 
 #define WIN32_LEAN_AND_MEAN
+#define IMGUI_DEFINE_MATH_OPERATORS
 
 #include "Types.h"
 #include "Define.h"
@@ -41,6 +42,7 @@ using namespace Microsoft::WRL;
 #include "Utility/ImGui/imgui.h"
 #include "Utility/ImPlot/implot.h"
 #include "Utility/ImPlot3D/implot3d.h"
+#include "Utility/ImGuiNodeEditor/imgui_node_editor.h"
 
 // Utility
 #include "Utility/ImageTool/ImageTool.h"

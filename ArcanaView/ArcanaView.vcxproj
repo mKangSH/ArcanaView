@@ -111,7 +111,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Utility\ImGui;$(ProjectDir)zHeader;$(SolutionDir)Libraries\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Utility\ImGui;$(ProjectDir)zHeader;$(SolutionDir)Libraries\Include;$(ProjectDir)Utility\ImGuiNodeEditor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -130,7 +130,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Utility\ImGui;$(ProjectDir)zHeader;$(SolutionDir)Libraries\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Utility\ImGui;$(ProjectDir)zHeader;$(SolutionDir)Libraries\Include;$(ProjectDir)Utility\ImGuiNodeEditor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -141,6 +141,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Utility\ImGuiNodeEditor\BlueprintUtility\builders.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGuiNodeEditor\BlueprintUtility\drawing.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGuiNodeEditor\BlueprintUtility\widgets.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="View\VisualSequenceGraph\NodeGenerator.cpp" />
     <ClCompile Include="View\HelpView.cpp" />
     <ClCompile Include="Utility\ImageTool\ImageTool.cpp" />
     <ClCompile Include="Utility\SimpleMath\SimpleMath.cpp" />
@@ -153,6 +166,9 @@
     <ClCompile Include="View\Demo\ImPlot3dDemoView.cpp" />
     <ClCompile Include="View\Demo\ImPlotDemoView.cpp" />
     <ClCompile Include="View\UIComponentBase.cpp" />
+    <ClCompile Include="View\VisualSequenceGraph\VisualSequenceGraph.cpp" />
+    <ClCompile Include="View\VisualSequenceGraph\VSGType.cpp" />
+    <ClCompile Include="View\VisualSequenceGraph\VSGUtil.cpp" />
     <ClCompile Include="zHeader\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -231,6 +247,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Utility\ImGuiNodeEditor\BlueprintUtility\builders.h" />
+    <ClInclude Include="Utility\ImGuiNodeEditor\BlueprintUtility\drawing.h" />
+    <ClInclude Include="Utility\ImGuiNodeEditor\BlueprintUtility\widgets.h" />
+    <ClInclude Include="View\VisualSequenceGraph\NodeGenerator.h" />
     <ClInclude Include="View\HelpView.h" />
     <ClInclude Include="Utility\ImageTool\ImageTool.h" />
     <ClInclude Include="Utility\SimpleMath\SimpleMath.h" />
@@ -242,6 +262,9 @@
     <ClInclude Include="View\Demo\ImPlot3dDemoView.h" />
     <ClInclude Include="View\Demo\ImPlotDemoView.h" />
     <ClInclude Include="View\UIComponentBase.h" />
+    <ClInclude Include="View\VisualSequenceGraph\VisualSequenceGraph.h" />
+    <ClInclude Include="View\VisualSequenceGraph\VSGType.h" />
+    <ClInclude Include="View\VisualSequenceGraph\VSGUtil.h" />
     <ClInclude Include="zHeader\Define.h" />
     <ClInclude Include="zHeader\pch.h" />
     <ClInclude Include="Utility\ImGuiNodeEditor\crude_json.h" />

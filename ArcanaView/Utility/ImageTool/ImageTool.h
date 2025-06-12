@@ -20,6 +20,8 @@ public:
 
 	void SetType(ImageToolType type) { _type = type; }
 	ImageToolType& GetType() { return _type; }
+
+	float* GetColor() { return _color; }
 	
 public:
 	bool IsNone() const { return _type == ImageToolType::None; }
@@ -41,6 +43,8 @@ private:
 
 private:
 	ImageToolType _type;
+
+	float _color[4] = { 1.0f, 1.0f, 0.0f, 1.0f };
 
 	ImVec2 _startPosNormalized = ImVec2(0.0f, 0.0f);
 	ImVec2 _endPosNormalized = ImVec2(0.0f, 0.0f);
