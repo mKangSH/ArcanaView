@@ -69,6 +69,9 @@ struct Node
     NodeType Type;
     ImVec2 Size;
 
+    std::string State;
+    std::string SavedState;
+
     Node(uint64 id, std::string name, ImColor color = ImColor(255, 255, 255))
         : ID(id), Name(name), Color(color), Type(NodeType::Blueprint), Size(0, 0)
     {

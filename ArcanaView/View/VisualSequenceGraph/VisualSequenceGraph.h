@@ -1,6 +1,7 @@
 #pragma once
 #include "../UIComponentBase.h"
 #include "VSGType.h"
+#include <imgui_internal.h>
 
 class VisualSequenceGraph : public UIComponentBase
 {
@@ -23,21 +24,16 @@ private:
 
 private:
 	void DrawNodes();
-	void DrawBlueprintNode();
-	void DrawTreeNode();
+	void DrawBlueprintNodes();
+	void DrawTreeNodes();
+	void DrawHoudiniNodes();
+	void DrawCommentNodes();
 
 	void DrawLinks();
 	void QueryCreateNode();
 	void QueryDeleteNode();
 
 	void DrawPopup();
-
-private:
-	Pin* FindPin(ed::PinId id);
-
-private:
-	bool IsPinLinked(ed::PinId id);
-	bool CanCreateLink(Pin* input, Pin* output);
 
 private:
 	ed::EditorContext* _editorContext = nullptr;
@@ -51,5 +47,17 @@ private:
 	bool _createNewNode = false;
 
 	float _pinIconSize = 24.0f;
+
+private:
+	inline ImRect ImRect_Expanded(const ImRect& rect, float x, float y);
 };
 
+inline ImRect VisualSequenceGraph::ImRect_Expanded(const ImRect& rect, float x, float y)
+{
+	auto result = rect;
+	result.Min.x -= x;
+	result.Min.y -= y;
+	result.Max.x += x;
+	result.Max.y += y;
+	return result;
+}

@@ -33,3 +33,75 @@ ax::Drawing::IconType VSGUtil::GetPinIconType(const Pin& pin)
         return ax::Drawing::IconType::Circle;
     }
 }
+
+bool VSGUtil::IsPinLinked(const std::vector<std::shared_ptr<Link>>& links, ed::PinId id)
+{
+    if (id == ed::PinId::Invalid)
+    {
+        return false;
+    }
+
+    for (auto& link : links)
+    {
+        if (link->InputPinID == id || link->OutputPinID == id)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool VSGUtil::CanCreateLink(Pin* input, Pin* output)
+{
+    if (!input || !output ||
+        (input == output) ||
+        (input->Kind == output->Kind) ||
+        (input->Type != output->Type) ||
+        (input->Node.lock() == output->Node.lock()))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+Pin* VSGUtil::FindPin(const std::vector<std::shared_ptr<Node>>& nodes, ed::PinId id)
+{
+    if (id == ed::PinId::Invalid)
+    {
+        return nullptr;
+    }
+
+    for (auto& node : nodes)
+    {
+        for (auto& pin : node->Inputs)
+        {
+            if (pin.ID == id)
+            {
+                return &pin;
+            }
+        }
+
+        for (auto& pin : node->Outputs)
+        {
+            if (pin.ID == id)
+            {
+                return &pin;
+            }
+        }
+    }
+}
+
+std::shared_ptr<Node> VSGUtil::FindNode(const std::vector<std::shared_ptr<Node>>& nodes, ed::NodeId id)
+{
+    for (auto& node : nodes)
+    {
+        if (node->ID == id)
+        {
+            return node;
+        }
+    }
+
+    return nullptr;
+}

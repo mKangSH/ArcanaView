@@ -196,6 +196,19 @@ void ImageView::UpdateDrawList()
 
 	drawList->AddImage(reinterpret_cast<ImTextureID>(_shaderResourceView.Get()), p0, p1, _uv0, _uv1);
 
+	if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+	{
+		ImGui::OpenPopup("Image Processing");
+	}
+
+	if (ImGui::BeginPopup("Image Processing"))
+	{
+		if (ImGui::MenuItem("Promote variable"))
+		{
+		}
+		ImGui::EndPopup();
+	}
+
 	_imageTool.Update(drawList);
 }
 
