@@ -3,7 +3,7 @@
 
 struct PixelValue
 {
-	uint8 R, G, B, A;
+	float R, G, B, A;
 };
 
 class ImageView : public UIComponentBase
@@ -52,4 +52,4 @@ public:
 	static uint64 ImageViewId;
 };
 
-PixelValue GetPixelValue(const uint8* pixels, uint32 pixelIndex, const DXGI_FORMAT& format);
+PixelValue GetPixelValue(const uint8* pixels, size_t byteOffset, const DXGI_FORMAT& format);

@@ -5,9 +5,9 @@ uint16 Pin::UniquePinId = 1;
 uint16 Node::UniqueNodeId = 1;
 uint16 Link::UniqueLinkId = 1;
 
-std::shared_ptr<Node> NodeGenerator::GenerateInputActionNode()
+Node* NodeGenerator::GenerateInputActionNode()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Input Action");
+    Node* node = new Node(Node::GetNextId(), "Input Action");
 
     node->Outputs.emplace_back(Pin::GetNextId(), "asdf", PinType::Delegate);
     node->Outputs.emplace_back(Pin::GetNextId(), "Pressed", PinType::Flow);
@@ -18,9 +18,9 @@ std::shared_ptr<Node> NodeGenerator::GenerateInputActionNode()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GenerateBranchNode()
+Node* NodeGenerator::GenerateBranchNode()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Branch");
+    Node* node = new Node(Node::GetNextId(), "Branch");
 
     node->Inputs.emplace_back(Pin::GetNextId(), "", PinType::Flow);
     node->Inputs.emplace_back(Pin::GetNextId(), "Condition", PinType::Bool);
@@ -32,9 +32,9 @@ std::shared_ptr<Node> NodeGenerator::GenerateBranchNode()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GenerateDoNNode()
+Node* NodeGenerator::GenerateDoNNode()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Do N");
+    Node* node = new Node(Node::GetNextId(), "Do N");
 
     node->Inputs.emplace_back(Pin::GetNextId(), "Enter", PinType::Flow);
     node->Inputs.emplace_back(Pin::GetNextId(), "N", PinType::Int);
@@ -47,9 +47,9 @@ std::shared_ptr<Node> NodeGenerator::GenerateDoNNode()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GenerateOutputActionNode()
+Node* NodeGenerator::GenerateOutputActionNode()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Output Action");
+    Node* node = new Node(Node::GetNextId(), "Output Action");
 
     node->Inputs.emplace_back(Pin::GetNextId(), "Sample", PinType::Float);
     node->Outputs.emplace_back(Pin::GetNextId(), "Condition", PinType::Bool);
@@ -60,9 +60,9 @@ std::shared_ptr<Node> NodeGenerator::GenerateOutputActionNode()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GeneratePrintStringNode()
+Node* NodeGenerator::GeneratePrintStringNode()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Print String");
+    Node* node = new Node(Node::GetNextId(), "Print String");
 
     node->Inputs.emplace_back(Pin::GetNextId(), "", PinType::Flow);
     node->Inputs.emplace_back(Pin::GetNextId(), "In String", PinType::String);
@@ -73,9 +73,9 @@ std::shared_ptr<Node> NodeGenerator::GeneratePrintStringNode()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GenerateMessageNode()
+Node* NodeGenerator::GenerateMessageNode()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Generate Message");
+    Node* node = new Node(Node::GetNextId(), "Generate Message");
 
     node->Type = NodeType::Simple;
     node->Outputs.emplace_back(Pin::GetNextId(), "Message", PinType::String);
@@ -85,9 +85,9 @@ std::shared_ptr<Node> NodeGenerator::GenerateMessageNode()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GenerateSetTimerNode()
+Node* NodeGenerator::GenerateSetTimerNode()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Set Timer");
+    Node* node = new Node(Node::GetNextId(), "Set Timer");
 
     node->Inputs.emplace_back(Pin::GetNextId(), "", PinType::Flow);
     node->Inputs.emplace_back(Pin::GetNextId(), "Object", PinType::Object);
@@ -101,9 +101,9 @@ std::shared_ptr<Node> NodeGenerator::GenerateSetTimerNode()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GenerateLessNode()
+Node* NodeGenerator::GenerateLessNode()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Generate Less");
+    Node* node = new Node(Node::GetNextId(), "Generate Less");
 
     node->Type = NodeType::Simple;
     node->Inputs.emplace_back(Pin::GetNextId(), "", PinType::Float);
@@ -115,9 +115,9 @@ std::shared_ptr<Node> NodeGenerator::GenerateLessNode()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GenerateWeirdNode()
+Node* NodeGenerator::GenerateWeirdNode()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Generate Weird");
+    Node* node = new Node(Node::GetNextId(), "Generate Weird");
 
     node->Type = NodeType::Simple;
     node->Inputs.emplace_back(Pin::GetNextId(), "", PinType::Float);
@@ -129,9 +129,9 @@ std::shared_ptr<Node> NodeGenerator::GenerateWeirdNode()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GenerateTraceByChannelNode()
+Node* NodeGenerator::GenerateTraceByChannelNode()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Generate Trace By Channel");
+    Node* node = new Node(Node::GetNextId(), "Generate Trace By Channel");
 
     node->Inputs.emplace_back(Pin::GetNextId(), "", PinType::Flow);
     node->Inputs.emplace_back(Pin::GetNextId(), "Start", PinType::Flow);
@@ -150,9 +150,9 @@ std::shared_ptr<Node> NodeGenerator::GenerateTraceByChannelNode()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GenerateTreeSequenceNode()
+Node* NodeGenerator::GenerateTreeSequenceNode()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Sequence");
+    Node* node = new Node(Node::GetNextId(), "Sequence");
 
     node->Type = NodeType::Tree;
     node->Inputs.emplace_back(Pin::GetNextId(), "", PinType::Flow);
@@ -163,9 +163,9 @@ std::shared_ptr<Node> NodeGenerator::GenerateTreeSequenceNode()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GenerateTreeTaskNode()
+Node* NodeGenerator::GenerateTreeTaskNode()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Move To");
+    Node* node = new Node(Node::GetNextId(), "Move To");
 
     node->Type = NodeType::Tree;
     node->Inputs.emplace_back(Pin::GetNextId(), "", PinType::Flow);
@@ -175,9 +175,9 @@ std::shared_ptr<Node> NodeGenerator::GenerateTreeTaskNode()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GenerateTreeTask2Node()
+Node* NodeGenerator::GenerateTreeTask2Node()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Random Wait");
+    Node* node = new Node(Node::GetNextId(), "Random Wait");
 
     node->Type = NodeType::Tree;
     node->Inputs.emplace_back(Pin::GetNextId(), "", PinType::Flow);
@@ -187,9 +187,9 @@ std::shared_ptr<Node> NodeGenerator::GenerateTreeTask2Node()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GenerateComment()
+Node* NodeGenerator::GenerateComment()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Test Comment");
+    Node* node = new Node(Node::GetNextId(), "Test Comment");
 
     node->Type = NodeType::Comment;
     node->Size = ImVec2(300, 200);
@@ -199,9 +199,9 @@ std::shared_ptr<Node> NodeGenerator::GenerateComment()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GenerateHoudiniTransformNode()
+Node* NodeGenerator::GenerateHoudiniTransformNode()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Transform");
+    Node* node = new Node(Node::GetNextId(), "Transform");
 
     node->Type = NodeType::Houdini;
     node->Inputs.emplace_back(Pin::GetNextId(), "", PinType::Flow);
@@ -212,9 +212,9 @@ std::shared_ptr<Node> NodeGenerator::GenerateHoudiniTransformNode()
     return node;
 }
 
-std::shared_ptr<Node> NodeGenerator::GenerateHoudiniGroupNode()
+Node* NodeGenerator::GenerateHoudiniGroupNode()
 {
-    std::shared_ptr<Node> node = std::make_shared<Node>(Node::GetNextId(), "Group");
+    Node* node = new Node(Node::GetNextId(), "Group");
 
     node->Type = NodeType::Houdini;
     node->Inputs.emplace_back(Pin::GetNextId(), "", PinType::Flow);
@@ -226,7 +226,57 @@ std::shared_ptr<Node> NodeGenerator::GenerateHoudiniGroupNode()
     return node;
 }
 
-void NodeGenerator::BuildNode(std::shared_ptr<Node> node)
+Node* NodeGenerator::GenerateImageSourceNode()
+{
+    Node* node = new Node(Node::GetNextId(), "Image Source", ImColor(120, 180, 90));
+
+    node->Op = NodeOp::ImageSource;
+    node->Outputs.emplace_back(Pin::GetNextId(), "Image", PinType::Image);
+
+    BuildNode(node);
+
+    return node;
+}
+
+Node* NodeGenerator::GenerateGrayscaleNode()
+{
+    Node* node = new Node(Node::GetNextId(), "Grayscale", ImColor(90, 140, 180));
+
+    node->Op = NodeOp::Grayscale;
+    node->Inputs.emplace_back(Pin::GetNextId(), "Image", PinType::Image);
+    node->Outputs.emplace_back(Pin::GetNextId(), "Image", PinType::Image);
+
+    BuildNode(node);
+
+    return node;
+}
+
+Node* NodeGenerator::GenerateInvertNode()
+{
+    Node* node = new Node(Node::GetNextId(), "Invert", ImColor(90, 140, 180));
+
+    node->Op = NodeOp::Invert;
+    node->Inputs.emplace_back(Pin::GetNextId(), "Image", PinType::Image);
+    node->Outputs.emplace_back(Pin::GetNextId(), "Image", PinType::Image);
+
+    BuildNode(node);
+
+    return node;
+}
+
+Node* NodeGenerator::GenerateImageOutputNode()
+{
+    Node* node = new Node(Node::GetNextId(), "Image Output", ImColor(180, 120, 90));
+
+    node->Op = NodeOp::ImageOutput;
+    node->Inputs.emplace_back(Pin::GetNextId(), "Image", PinType::Image);
+
+    BuildNode(node);
+
+    return node;
+}
+
+void NodeGenerator::BuildNode(Node* node)
 {
     for (auto& input : node->Inputs)
     {

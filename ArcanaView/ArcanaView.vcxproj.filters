@@ -13,230 +13,310 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{80a0a295-a06e-464f-a270-30556ad158ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{f55d10de-61c4-4328-8dd7-28b07caa3aa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{3e902412-eb47-40ac-9054-8ee6deacf56d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View">
+      <UniqueIdentifier>{4d34aa9f-2205-47ea-a876-8461dff67055}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zHeader">
+      <UniqueIdentifier>{64a9a8bf-7d24-4b6b-8112-a4ab7efe8c05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\ImageTool">
+      <UniqueIdentifier>{182aaaef-05b8-4c86-b8d9-90c01ac86221}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\ImGui">
+      <UniqueIdentifier>{fdd7d329-c0b8-41c3-b026-ec04b965ec07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\ImGuiNodeEditor">
+      <UniqueIdentifier>{79aaacd4-c89a-43d4-bc4d-93ba27f7d416}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\ImPlot">
+      <UniqueIdentifier>{2df9aed7-4e8c-4ff1-b9ce-1e6b32b438a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\ImPlot3D">
+      <UniqueIdentifier>{65793a3f-ec4c-4429-9d08-2d746b5af5eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\SimpleMath">
+      <UniqueIdentifier>{dc9bb355-313b-4b53-ba80-335cd49c3bc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\ImGuiNodeEditor\BlueprintUtility">
+      <UniqueIdentifier>{f2abca28-9a29-4672-a443-82d8295bad11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View\Demo">
+      <UniqueIdentifier>{1835330c-a740-41a2-85a3-9f35790149c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View\VisualSequenceGraph">
+      <UniqueIdentifier>{bee88b2c-88af-4eb7-be59-507391da501d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main\main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImGui\imgui_impl_dx11.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImGui\imgui_impl_win32.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImGui\imgui_tables.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImGui\imgui_widgets.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImGui\imgui.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImGui\imgui_demo.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImGui\imgui_draw.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImPlot\implot_items.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImPlot\implot.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImPlot\implot_demo.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImPlot3D\implot3d_demo.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImPlot3D\implot3d_items.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImPlot3D\implot3d_meshes.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImPlot3D\implot3d.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImGuiNodeEditor\imgui_canvas.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImGuiNodeEditor\imgui_node_editor.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImGuiNodeEditor\imgui_node_editor_api.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\ImGuiNodeEditor\crude_json.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="zHeader\pch.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Manager\LayoutManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="View\UIComponentBase.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Manager\ImGuiManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Manager\Graphics.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="View\Demo\ImGuiDemoView.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="View\Demo\ImPlotDemoView.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="View\Demo\ImPlot3dDemoView.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="View\ImageView.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>zHeader</Filter>
     </ClCompile>
     <ClCompile Include="Utility\SimpleMath\SimpleMath.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Utility\SimpleMath</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImPlot3D\implot3d.cpp">
+      <Filter>Utility\ImPlot3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImPlot3D\implot3d_demo.cpp">
+      <Filter>Utility\ImPlot3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImPlot3D\implot3d_items.cpp">
+      <Filter>Utility\ImPlot3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImPlot3D\implot3d_meshes.cpp">
+      <Filter>Utility\ImPlot3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImPlot\implot.cpp">
+      <Filter>Utility\ImPlot</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImPlot\implot_demo.cpp">
+      <Filter>Utility\ImPlot</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImPlot\implot_items.cpp">
+      <Filter>Utility\ImPlot</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGuiNodeEditor\imgui_node_editor.cpp">
+      <Filter>Utility\ImGuiNodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGuiNodeEditor\imgui_node_editor_api.cpp">
+      <Filter>Utility\ImGuiNodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGuiNodeEditor\crude_json.cpp">
+      <Filter>Utility\ImGuiNodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGuiNodeEditor\BlueprintUtility\widgets.cpp">
+      <Filter>Utility\ImGuiNodeEditor\BlueprintUtility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGuiNodeEditor\BlueprintUtility\builders.cpp">
+      <Filter>Utility\ImGuiNodeEditor\BlueprintUtility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGuiNodeEditor\BlueprintUtility\drawing.cpp">
+      <Filter>Utility\ImGuiNodeEditor\BlueprintUtility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGui\imgui.cpp">
+      <Filter>Utility\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGui\imgui_demo.cpp">
+      <Filter>Utility\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGui\imgui_draw.cpp">
+      <Filter>Utility\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGui\imgui_impl_dx11.cpp">
+      <Filter>Utility\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGui\imgui_impl_win32.cpp">
+      <Filter>Utility\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGui\imgui_tables.cpp">
+      <Filter>Utility\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGuiNodeEditor\imgui_canvas.cpp">
+      <Filter>Utility\ImGuiNodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ImGui\imgui_widgets.cpp">
+      <Filter>Utility\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\Graphics.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\ImGuiManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\LayoutManager.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="Utility\ImageTool\ImageTool.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Utility\ImageTool</Filter>
+    </ClCompile>
+    <ClCompile Include="View\UIComponentBase.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\ImageView.cpp">
+      <Filter>View</Filter>
     </ClCompile>
     <ClCompile Include="View\HelpView.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\Demo\ImPlot3dDemoView.cpp">
+      <Filter>View\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="View\Demo\ImPlotDemoView.cpp">
+      <Filter>View\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="View\Demo\ImGuiDemoView.cpp">
+      <Filter>View\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="View\VisualSequenceGraph\NodeGenerator.cpp">
+      <Filter>View\VisualSequenceGraph</Filter>
     </ClCompile>
     <ClCompile Include="View\VisualSequenceGraph\VisualSequenceGraph.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>View\VisualSequenceGraph</Filter>
     </ClCompile>
     <ClCompile Include="View\VisualSequenceGraph\VSGType.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>View\VisualSequenceGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="View\VisualSequenceGraph\VSGUtil.cpp">
+      <Filter>View\VisualSequenceGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\main.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Utility\ImGui\imgui_impl_dx11.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImGui\imgui_impl_win32.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImGui\imgui_internal.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImGui\imconfig.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImGui\imgui.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImPlot\implot_internal.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImPlot\implot.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImPlot3D\implot3d.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImPlot3D\implot3d_internal.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImGuiNodeEditor\imgui_canvas.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImGuiNodeEditor\imgui_extra_math.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImGuiNodeEditor\imgui_node_editor.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImGuiNodeEditor\imgui_node_editor_internal.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImGuiNodeEditor\crude_json.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImGuiNodeEditor\imgui_bezier_math.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImGui\imstb_rectpack.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImGui\imstb_textedit.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\ImGui\imstb_truetype.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="zHeader\Types.h">
+      <Filter>zHeader</Filter>
     </ClInclude>
     <ClInclude Include="zHeader\pch.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Manager\LayoutManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="View\UIComponentBase.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Manager\ImGuiManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Manager\Graphics.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>zHeader</Filter>
     </ClInclude>
     <ClInclude Include="zHeader\Define.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="View\Demo\ImGuiDemoView.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="View\Demo\ImPlotDemoView.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="View\Demo\ImPlot3dDemoView.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="View\ImageView.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="zHeader\Types.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>zHeader</Filter>
     </ClInclude>
     <ClInclude Include="Utility\SimpleMath\SimpleMath.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Utility\SimpleMath</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImPlot3D\implot3d.h">
+      <Filter>Utility\ImPlot3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImPlot3D\implot3d_internal.h">
+      <Filter>Utility\ImPlot3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImPlot\implot_internal.h">
+      <Filter>Utility\ImPlot</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImPlot\implot.h">
+      <Filter>Utility\ImPlot</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGuiNodeEditor\imgui_node_editor_internal.h">
+      <Filter>Utility\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGuiNodeEditor\imgui_node_editor.h">
+      <Filter>Utility\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGuiNodeEditor\crude_json.h">
+      <Filter>Utility\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGuiNodeEditor\imgui_extra_math.h">
+      <Filter>Utility\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGuiNodeEditor\imgui_bezier_math.h">
+      <Filter>Utility\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGuiNodeEditor\BlueprintUtility\builders.h">
+      <Filter>Utility\ImGuiNodeEditor\BlueprintUtility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGuiNodeEditor\BlueprintUtility\drawing.h">
+      <Filter>Utility\ImGuiNodeEditor\BlueprintUtility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGuiNodeEditor\BlueprintUtility\widgets.h">
+      <Filter>Utility\ImGuiNodeEditor\BlueprintUtility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGui\imconfig.h">
+      <Filter>Utility\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGui\imgui.h">
+      <Filter>Utility\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGui\imgui_impl_dx11.h">
+      <Filter>Utility\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGui\imgui_impl_win32.h">
+      <Filter>Utility\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGui\imstb_rectpack.h">
+      <Filter>Utility\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGui\imstb_textedit.h">
+      <Filter>Utility\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGui\imstb_truetype.h">
+      <Filter>Utility\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGuiNodeEditor\imgui_canvas.h">
+      <Filter>Utility\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImGui\imgui_internal.h">
+      <Filter>Utility\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\Graphics.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\ImGuiManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\LayoutManager.h">
+      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="Utility\ImageTool\ImageTool.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Utility\ImageTool</Filter>
+    </ClInclude>
+    <ClInclude Include="View\ImageView.h">
+      <Filter>View</Filter>
     </ClInclude>
     <ClInclude Include="View\HelpView.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\UIComponentBase.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\Demo\ImPlot3dDemoView.h">
+      <Filter>View\Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="View\Demo\ImGuiDemoView.h">
+      <Filter>View\Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="View\Demo\ImPlotDemoView.h">
+      <Filter>View\Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="View\VisualSequenceGraph\NodeGenerator.h">
+      <Filter>View\VisualSequenceGraph</Filter>
     </ClInclude>
     <ClInclude Include="View\VisualSequenceGraph\VisualSequenceGraph.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>View\VisualSequenceGraph</Filter>
     </ClInclude>
     <ClInclude Include="View\VisualSequenceGraph\VSGType.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>View\VisualSequenceGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="View\VisualSequenceGraph\VSGUtil.h">
+      <Filter>View\VisualSequenceGraph</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Utility\ImGuiNodeEditor\imgui_bezier_math.inl">
-      <Filter>헤더 파일</Filter>
-    </None>
-    <None Include="Utility\ImGuiNodeEditor\imgui_extra_math.inl">
-      <Filter>헤더 파일</Filter>
+    <None Include="Utility\SimpleMath\SimpleMath.inl">
+      <Filter>Utility\SimpleMath</Filter>
     </None>
     <None Include="Utility\ImGuiNodeEditor\imgui_node_editor_internal.inl">
-      <Filter>헤더 파일</Filter>
+      <Filter>Utility\ImGuiNodeEditor</Filter>
     </None>
-    <None Include="Utility\ImGuiNodeEditor\LICENSE" />
-    <None Include="Utility\ImPlot3D\LICENSE" />
-    <None Include="Utility\SimpleMath\SimpleMath.inl">
-      <Filter>헤더 파일</Filter>
+    <None Include="Utility\ImGuiNodeEditor\imgui_extra_math.inl">
+      <Filter>Utility\ImGuiNodeEditor</Filter>
+    </None>
+    <None Include="Utility\ImGuiNodeEditor\imgui_bezier_math.inl">
+      <Filter>Utility\ImGuiNodeEditor</Filter>
+    </None>
+    <None Include="Utility\ImGuiNodeEditor\LICENSE">
+      <Filter>Utility\ImGuiNodeEditor</Filter>
+    </None>
+    <None Include="Utility\ImPlot3D\LICENSE">
+      <Filter>Utility\ImPlot3D</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Utility\ImPlot\LICENSE.txt" />
-    <Text Include="Utility\ImGui\LICENSE.txt" />
+    <Text Include="Utility\ImGui\LICENSE.txt">
+      <Filter>Utility\ImGui</Filter>
+    </Text>
+    <Text Include="Utility\ImPlot\LICENSE.txt">
+      <Filter>Utility\ImPlot</Filter>
+    </Text>
   </ItemGroup>
 </Project>

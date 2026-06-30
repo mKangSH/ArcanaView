@@ -13,6 +13,7 @@ ImColor VSGUtil::GetIconColor(PinType type)
     case PinType::Object:   return ImColor(51, 150, 215);
     case PinType::Function: return ImColor(218, 0, 183);
     case PinType::Delegate: return ImColor(255, 48, 48);
+    case PinType::Image:    return ImColor(255, 160, 0);
     default:                return ImColor(255, 255, 255);
     }
 }
@@ -29,12 +30,13 @@ ax::Drawing::IconType VSGUtil::GetPinIconType(const Pin& pin)
     case PinType::Object:   return ax::Drawing::IconType::Circle;
     case PinType::Function: return ax::Drawing::IconType::Circle;
     case PinType::Delegate: return ax::Drawing::IconType::Square;
+    case PinType::Image:    return ax::Drawing::IconType::Square;
     default:
         return ax::Drawing::IconType::Circle;
     }
 }
 
-bool VSGUtil::IsPinLinked(const std::vector<std::shared_ptr<Link>>& links, ed::PinId id)
+bool VSGUtil::IsPinLinked(const std::vector<Link*>& links, ed::PinId id)
 {
     if (id == ed::PinId::Invalid)
     {
@@ -58,7 +60,7 @@ bool VSGUtil::CanCreateLink(Pin* input, Pin* output)
         (input == output) ||
         (input->Kind == output->Kind) ||
         (input->Type != output->Type) ||
-        (input->Node.lock() == output->Node.lock()))
+        (input->Node == output->Node))
     {
         return false;
     }
@@ -66,7 +68,7 @@ bool VSGUtil::CanCreateLink(Pin* input, Pin* output)
     return true;
 }
 
-Pin* VSGUtil::FindPin(const std::vector<std::shared_ptr<Node>>& nodes, ed::PinId id)
+Pin* VSGUtil::FindPin(const std::vector<Node*>& nodes, ed::PinId id)
 {
     if (id == ed::PinId::Invalid)
     {
@@ -91,9 +93,11 @@ Pin* VSGUtil::FindPin(const std::vector<std::shared_ptr<Node>>& nodes, ed::PinId
             }
         }
     }
+
+    return nullptr;
 }
 
-std::shared_ptr<Node> VSGUtil::FindNode(const std::vector<std::shared_ptr<Node>>& nodes, ed::NodeId id)
+Node* VSGUtil::FindNode(const std::vector<Node*>& nodes, ed::NodeId id)
 {
     for (auto& node : nodes)
     {

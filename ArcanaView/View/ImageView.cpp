@@ -80,21 +80,74 @@ void ImageView::Cleanup()
 {
 }
 
+// ImGui 기본 셰이더로 바로 표시 가능한 8bit RGBA/BGRA 포맷인지 판별한다.
+static bool IsDisplayableFormat(DXGI_FORMAT format)
+{
+	switch (format)
+	{
+		case DXGI_FORMAT_R8G8B8A8_UNORM:
+		case DXGI_FORMAT_B8G8R8A8_UNORM:
+		case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+		case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
+			return true;
+		default:
+			return false;
+	}
+}
+
 void ImageView::CreateImageTexture()
 {
 	HRESULT hr = DirectX::LoadFromWICFile(_imageFile.c_str(), DirectX::WIC_FLAGS_NONE, &_metadata, _image);
-	if (hr != S_OK) 
+	if (hr != S_OK)
 	{
-		// TODO : Error Logging
-
+		wchar_t msg[256];
+		swprintf_s(msg, L"[ImageView] LoadFromWICFile failed. hr=0x%08X, file=%s\n", hr, _imageFile.c_str());
+		OutputDebugStringW(msg);
 		return;
 	}
 
-	hr = DirectX::CreateShaderResourceView(DEVICE.Get(), _image.GetImages(), _image.GetImageCount(), _metadata, _shaderResourceView.GetAddressOf());
-	if (hr != S_OK) 
+	// WIC가 매핑한 실제 DXGI 포맷을 진단용으로 출력 (예: 32bit float TIFF -> R32_FLOAT / R32G32B32A32_FLOAT)
 	{
-		// TODO : Error Logging
-		return;
+		wchar_t msg[128];
+		swprintf_s(msg, L"[ImageView] Loaded format=%d (%zux%zu)\n", static_cast<int>(_metadata.format), _metadata.width, _metadata.height);
+		OutputDebugStringW(msg);
+	}
+
+	// 표시(렌더링)용 텍스처는 ImGui 기본 셰이더와 호환되는 8bit RGBA로 변환한다.
+	// 원본 _image(float 등)는 픽셀 검사기에서 raw 값을 읽기 위해 그대로 보존한다.
+	if (IsDisplayableFormat(_metadata.format))
+	{
+		hr = DirectX::CreateShaderResourceView(DEVICE.Get(), _image.GetImages(), _image.GetImageCount(), _metadata, _shaderResourceView.GetAddressOf());
+		if (hr != S_OK)
+		{
+			wchar_t msg[128];
+			swprintf_s(msg, L"[ImageView] CreateShaderResourceView failed. hr=0x%08X\n", hr);
+			OutputDebugStringW(msg);
+			return;
+		}
+	}
+	else
+	{
+		DirectX::ScratchImage converted;
+		hr = DirectX::Convert(_image.GetImages(), _image.GetImageCount(), _metadata,
+			DXGI_FORMAT_R8G8B8A8_UNORM,
+			DirectX::TEX_FILTER_DEFAULT, DirectX::TEX_THRESHOLD_DEFAULT, converted);
+		if (hr != S_OK)
+		{
+			wchar_t msg[128];
+			swprintf_s(msg, L"[ImageView] Convert to R8G8B8A8_UNORM failed. hr=0x%08X, srcFormat=%d\n", hr, static_cast<int>(_metadata.format));
+			OutputDebugStringW(msg);
+			return;
+		}
+
+		hr = DirectX::CreateShaderResourceView(DEVICE.Get(), converted.GetImages(), converted.GetImageCount(), converted.GetMetadata(), _shaderResourceView.GetAddressOf());
+		if (hr != S_OK)
+		{
+			wchar_t msg[128];
+			swprintf_s(msg, L"[ImageView] CreateShaderResourceView (converted) failed. hr=0x%08X\n", hr);
+			OutputDebugStringW(msg);
+			return;
+		}
 	}
 }
 
@@ -118,20 +171,28 @@ void ImageView::DrawImageValue()
 
 	ImVec2 windowContentRegionAvail = ImGui::GetContentRegionAvail();
 
-	if (ImGui::IsWindowHovered() && 
-		mousePosX >= 0 && mousePosX < windowContentRegionAvail.x && 
+	if (ImGui::IsWindowHovered() &&
+		mousePosX >= 0 && mousePosX < windowContentRegionAvail.x &&
 		mousePosY >= 0 && mousePosY < windowContentRegionAvail.y)
 	{
-		const uint8* pixels = _image.GetPixels();
-		
-		float xRatio = _metadata.width / windowContentRegionAvail.x;
-		float yRatio = _metadata.height / (windowContentRegionAvail.y - textlineWithSpacing);
+		const DirectX::Image* img = _image.GetImage(0, 0, 0);
 
-		uint32 pixelIndex = static_cast<uint32>(mousePosY * yRatio) * _metadata.width + static_cast<uint32>(mousePosX * xRatio);
-
-		if (pixelIndex < _metadata.width * _metadata.height)
+		if (img != nullptr)
 		{
-			pixelValue = GetPixelValue(pixels, pixelIndex * 4, _metadata.format);
+			float xRatio = _metadata.width / windowContentRegionAvail.x;
+			float yRatio = _metadata.height / (windowContentRegionAvail.y - textlineWithSpacing);
+
+			size_t col = static_cast<size_t>(mousePosX * xRatio);
+			size_t row = static_cast<size_t>(mousePosY * yRatio);
+
+			if (col < _metadata.width && row < _metadata.height)
+			{
+				// 포맷별 픽셀당 바이트 수와 행 피치(패딩 포함)를 사용해 정확한 바이트 오프셋 계산
+				size_t bytesPerPixel = DirectX::BitsPerPixel(_metadata.format) / 8;
+				size_t byteOffset = row * img->rowPitch + col * bytesPerPixel;
+
+				pixelValue = GetPixelValue(img->pixels, byteOffset, _metadata.format);
+			}
 		}
 	}
 	else
@@ -139,8 +200,8 @@ void ImageView::DrawImageValue()
 		mousePosX = 0;
 		mousePosY = 0;
 	}
-	
-	ImGui::Text("X: %f Y: %f R: %u G: %u B: %u A: %u", mousePosX, mousePosY, pixelValue.R, pixelValue.G, pixelValue.B, pixelValue.A);
+
+	ImGui::Text("X: %f Y: %f R: %g G: %g B: %g A: %g", mousePosX, mousePosY, pixelValue.R, pixelValue.G, pixelValue.B, pixelValue.A);
 }
 
 void ImageView::UpdateDrawList()
@@ -163,12 +224,12 @@ void ImageView::UpdateDrawList()
 
 		if (ImGui::GetIO().MouseWheel > 0.0f)
 		{
-			// Zoom in (UV ������ �ٿ��� Ȯ��)
+			// Zoom in (UV 범위를 줄여서 확대)
 			zoomFactor = 1.0f - zoomSensitivity;
 		}		
 		else if (ImGui::GetIO().MouseWheel < 0.0f)
 		{
-			// Zoom out (UV ������ �÷��� ���)
+			// Zoom out (UV 범위를 늘려서 축소)
 			zoomFactor = 1.0f + zoomSensitivity;
 		}
 
@@ -205,6 +266,8 @@ void ImageView::UpdateDrawList()
 	{
 		if (ImGui::MenuItem("Promote variable"))
 		{
+			// 현재 이미지를 Visual Sequence Graph 의 Image Source 노드로 승격.
+			LAYOUT->PromoteImageToGraph(_image);
 		}
 		ImGui::EndPopup();
 	}
@@ -212,19 +275,38 @@ void ImageView::UpdateDrawList()
 	_imageTool.Update(drawList);
 }
 
-PixelValue GetPixelValue(const uint8* pixels, uint32 pixelIndex, const DXGI_FORMAT& format)
+PixelValue GetPixelValue(const uint8* pixels, size_t byteOffset, const DXGI_FORMAT& format)
 {
+	const uint8* p = pixels + byteOffset;
+
 	switch (format)
 	{
+		// 8bit UNORM: 바이트 값(0~255)을 그대로 표시
 		case DXGI_FORMAT_R8G8B8A8_UNORM:
-			return { pixels[pixelIndex + 0], pixels[pixelIndex + 1], pixels[pixelIndex + 2], pixels[pixelIndex + 3] };
-		case DXGI_FORMAT_B8G8R8A8_UNORM:
-			return { pixels[pixelIndex + 2], pixels[pixelIndex + 1], pixels[pixelIndex + 0], pixels[pixelIndex + 3] };
 		case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
-			return { pixels[pixelIndex + 0], pixels[pixelIndex + 1], pixels[pixelIndex + 2], pixels[pixelIndex + 3] };
+			return { static_cast<float>(p[0]), static_cast<float>(p[1]), static_cast<float>(p[2]), static_cast<float>(p[3]) };
+		case DXGI_FORMAT_B8G8R8A8_UNORM:
 		case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
-			return { pixels[pixelIndex + 2], pixels[pixelIndex + 1], pixels[pixelIndex + 0], pixels[pixelIndex + 3] };
+			return { static_cast<float>(p[2]), static_cast<float>(p[1]), static_cast<float>(p[0]), static_cast<float>(p[3]) };
+
+		// 32bit float: raw 값을 그대로 표시
+		case DXGI_FORMAT_R32_FLOAT:
+		{
+			const float* f = reinterpret_cast<const float*>(p);
+			return { f[0], 0.0f, 0.0f, 1.0f };
+		}
+		case DXGI_FORMAT_R32G32B32_FLOAT:
+		{
+			const float* f = reinterpret_cast<const float*>(p);
+			return { f[0], f[1], f[2], 1.0f };
+		}
+		case DXGI_FORMAT_R32G32B32A32_FLOAT:
+		{
+			const float* f = reinterpret_cast<const float*>(p);
+			return { f[0], f[1], f[2], f[3] };
+		}
+
 		default:
-			return { 0, 0, 0, 0 }; // Unsupported format
+			return { 0.0f, 0.0f, 0.0f, 0.0f }; // Unsupported format
 	}
 }

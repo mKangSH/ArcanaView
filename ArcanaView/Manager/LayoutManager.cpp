@@ -10,20 +10,21 @@
 
 void LayoutManager::Init()
 {
-	std::shared_ptr<ImGuiDemoView> imGuiDemoView = std::make_shared<ImGuiDemoView>();
+	ImGuiDemoView* imGuiDemoView = new ImGuiDemoView();
 	_uiComponents.push_back(imGuiDemoView);
 
-	std::shared_ptr<ImPlotDemoView> imPlotDemoView = std::make_shared<ImPlotDemoView>();
+	ImPlotDemoView* imPlotDemoView = new ImPlotDemoView();
 	_uiComponents.push_back(imPlotDemoView);
 
-	std::shared_ptr<ImPlot3dDemoView> imPlot3dDemoView = std::make_shared<ImPlot3dDemoView>();
+	ImPlot3dDemoView* imPlot3dDemoView = new ImPlot3dDemoView();
 	_uiComponents.push_back(imPlot3dDemoView);
 
-	std::shared_ptr<HelpView> helpView = std::make_shared<HelpView>();
+	HelpView* helpView = new HelpView();
 	_uiComponents.push_back(helpView);
 
-	std::shared_ptr<VisualSequenceGraph> visualSequenceGraph = std::make_shared<VisualSequenceGraph>();
+	VisualSequenceGraph* visualSequenceGraph = new VisualSequenceGraph();
 	_uiComponents.push_back(visualSequenceGraph);
+	_visualSequenceGraph = visualSequenceGraph;
 }
 
 void LayoutManager::Update()
@@ -39,10 +40,11 @@ void LayoutManager::Update()
 
 	for (auto it = _imageViewComponents.begin(); it != _imageViewComponents.end();) 
 	{
-		std::shared_ptr<UIComponentBase> imageView = (*it).second;
+		UIComponentBase* imageView = (*it).second;
 		bool* isVisible = imageView->IsVisible();
 		if (*isVisible == false)
 		{
+			delete imageView;
 			_imageViewComponents.erase(it++);
 		}
 		else
@@ -68,13 +70,34 @@ void LayoutManager::Render()
 
 void LayoutManager::Cleanup()
 {
+	// _visualSequenceGraph 는 _uiComponents 가 소유하므로 별도 delete 하지 않는다.
+	_visualSequenceGraph = nullptr;
+
+	for (UIComponentBase* uiComponent : _uiComponents)
+	{
+		delete uiComponent;
+	}
 	_uiComponents.clear();
+
+	for (auto& imageView : _imageViewComponents)
+	{
+		delete imageView.second;
+	}
+	_imageViewComponents.clear();
 }
 
 void LayoutManager::AddImageView(const std::wstring& imageFile)
 {
-	std::shared_ptr<ImageView> imageView = std::make_shared<ImageView>(imageFile);
+	ImageView* imageView = new ImageView(imageFile);
 	_imageViewComponents.insert({ imageView->GetTitle(), imageView });
+}
+
+void LayoutManager::PromoteImageToGraph(const DirectX::ScratchImage& image)
+{
+	if (_visualSequenceGraph)
+	{
+		_visualSequenceGraph->AddImageSourceNode(image);
+	}
 }
 
 void LayoutManager::ConstructLayout()

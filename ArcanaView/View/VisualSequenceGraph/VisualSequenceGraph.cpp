@@ -54,10 +54,10 @@ VisualSequenceGraph::VisualSequenceGraph() : Super("Visual Scene Graph")
 	_editorContext = ed::CreateEditor(&config);
 	ed::SetCurrentEditor(_editorContext);
     
-	shared_ptr<Node> node = NodeGenerator::GenerateInputActionNode();
+	Node* node = NodeGenerator::GenerateInputActionNode();
 	_nodes.push_back(node); ed::SetNodePosition(node->ID, ImVec2(-252, 220));
-    
-	shared_ptr<Node> node2 = NodeGenerator::GenerateDoNNode();
+
+	Node* node2 = NodeGenerator::GenerateDoNNode();
 	_nodes.push_back(node2); ed::SetNodePosition(node2->ID, ImVec2(-300, 220));
 
 	ed::NavigateToContent();
@@ -65,6 +65,24 @@ VisualSequenceGraph::VisualSequenceGraph() : Super("Visual Scene Graph")
 
 VisualSequenceGraph::~VisualSequenceGraph()
 {
+	// 노드가 소유한 출력 이미지 + 노드 + 링크를 모두 해제한다.
+	for (Node* node : _nodes)
+	{
+		for (Pin& out : node->Outputs)
+		{
+			delete out.ImageValue;
+			out.ImageValue = nullptr;
+		}
+		delete node;
+	}
+	_nodes.clear();
+
+	for (Link* link : _links)
+	{
+		delete link;
+	}
+	_links.clear();
+
 	ed::DestroyEditor(_editorContext);
 	_editorContext = nullptr;
 }
@@ -114,6 +132,197 @@ void VisualSequenceGraph::Cleanup()
 
 }
 
+// ---- 평가(실행) 엔진 --------------------------------------------------------
+
+void VisualSequenceGraph::RunGraph()
+{
+    // ImageOutput(싱크)에서부터 pull-based 로 상류를 평가한다.
+    // state 를 공유해 공통 상류 노드는 1회만 평가된다.
+    std::unordered_map<uint64, int> state;
+
+    for (auto& node : _nodes)
+    {
+        if (node->Op == NodeOp::ImageOutput)
+        {
+            EvaluateNode(node, state);
+        }
+    }
+}
+
+Node* VisualSequenceGraph::FindNodeOfPin(ed::PinId pinId)
+{
+    if (pinId == ed::PinId::Invalid)
+    {
+        return nullptr;
+    }
+
+    for (auto& node : _nodes)
+    {
+        for (auto& pin : node->Inputs)
+        {
+            if (pin.ID == pinId)
+            {
+                return node;
+            }
+        }
+
+        for (auto& pin : node->Outputs)
+        {
+            if (pin.ID == pinId)
+            {
+                return node;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+Pin* VisualSequenceGraph::FindSourcePinForInput(const Pin& inputPin)
+{
+    // 링크 방향 반전 주의: 입력 핀에 연결된 소스(출력) 핀은
+    // link->OutputPinID == inputPin.ID 인 링크의 link->InputPinID 이다.
+    for (auto& link : _links)
+    {
+        if (link->OutputPinID == inputPin.ID)
+        {
+            return VSGUtil::FindPin(_nodes, link->InputPinID);
+        }
+    }
+
+    return nullptr;
+}
+
+bool VisualSequenceGraph::EvaluateNode(Node* node, std::unordered_map<uint64, int>& state)
+{
+    const uint64 id = reinterpret_cast<uint64>(node->ID.AsPointer());
+
+    auto it = state.find(id);
+    if (it != state.end())
+    {
+        if (it->second == 1)
+        {
+            return true; // 이미 평가 완료
+        }
+        return false; // visiting 중 재방문 = 사이클 -> 출력 비움
+    }
+    state[id] = 0; // visiting
+
+    // 입력 핀 해석: 소스 노드를 먼저 평가한 뒤 간선을 따라 값을 복사한다.
+    // (평가 중 _nodes / 핀 벡터를 변경하지 않으므로 Pin* 는 유효)
+    for (size_t i = 0; i < node->Inputs.size(); ++i)
+    {
+        Pin* srcPin = FindSourcePinForInput(node->Inputs[i]);
+        if (srcPin == nullptr)
+        {
+            node->Inputs[i].ImageValue = nullptr; // 미연결
+            continue;
+        }
+
+        Node* srcNode = FindNodeOfPin(srcPin->ID);
+        if (srcNode)
+        {
+            EvaluateNode(srcNode, state);
+        }
+
+        node->Inputs[i].ImageValue = srcPin->ImageValue;
+    }
+
+    switch (node->Op)
+    {
+    case NodeOp::ImageSource:
+        // 출력 핀 ImageValue 는 Promote 업로드 시 이미 채워짐 -> 통과
+        break;
+
+    case NodeOp::Grayscale:
+    case NodeOp::Invert:
+    {
+        GpuImage* in = node->Inputs.empty() ? nullptr : node->Inputs[0].ImageValue; // 빌려쓰기 (소유 X)
+        GpuImage* out = nullptr;
+
+        if (in)
+        {
+            out = _processor.CreateTarget(in->Width, in->Height);
+            if (out && _processor.Apply(node->Op, *in, *out) == false)
+            {
+                delete out;
+                out = nullptr;
+            }
+        }
+
+        if (node->Outputs.empty() == false)
+        {
+            // 이전 Run 의 결과(소유)는 새 결과로 덮어쓰기 전에 해제한다.
+            if (node->Outputs[0].ImageValue != out)
+            {
+                delete node->Outputs[0].ImageValue;
+            }
+            node->Outputs[0].ImageValue = out; // null 이면 하류로 "데이터 없음" 전파
+        }
+        break;
+    }
+
+    case NodeOp::ImageOutput:
+        // 입력[0].ImageValue 가 최종 결과. 미리보기는 DrawBlueprintNodes 에서 이 핀을 읽어 표시.
+        break;
+
+    default:
+        break;
+    }
+
+    state[id] = 1; // done
+    return true;
+}
+
+void VisualSequenceGraph::AddImageSourceNode(const DirectX::ScratchImage& image)
+{
+    GpuImage* gpu = _processor.UploadFromScratchImage(image);
+
+    Node* node = NodeGenerator::GenerateImageSourceNode();
+    if (node->Outputs.empty() == false)
+    {
+        node->Outputs[0].ImageValue = gpu;
+    }
+
+    _nodes.push_back(node);
+
+    // 노드 위치 지정은 에디터 컨텍스트가 활성화된 상태여야 한다.
+    // (이 함수는 VSG 자체 Update 밖에서 호출되므로 컨텍스트를 임시 설정)
+    ed::SetCurrentEditor(_editorContext);
+    const float stagger = 24.0f * static_cast<float>(_nodes.size());
+    ed::SetNodePosition(node->ID, ImVec2(stagger, stagger));
+    ed::SetCurrentEditor(nullptr);
+}
+
+void VisualSequenceGraph::ReleaseNodeImages(Node* node)
+{
+    // 이 노드가 소유한(출력 핀) GpuImage 를 해제한다.
+    for (Pin& out : node->Outputs)
+    {
+        if (out.ImageValue == nullptr)
+        {
+            continue;
+        }
+
+        GpuImage* dead = out.ImageValue;
+
+        // 다른 노드의 입력 핀이 이 포인터를 빌려쓰고 있었다면 무효화(댕글링 방지).
+        for (Node* other : _nodes)
+        {
+            for (Pin& in : other->Inputs)
+            {
+                if (in.ImageValue == dead)
+                {
+                    in.ImageValue = nullptr;
+                }
+            }
+        }
+
+        out.ImageValue = nullptr;
+        delete dead;
+    }
+}
+
 void VisualSequenceGraph::ShowToolbar()
 {
     ImGui::ArrowButton("Start", ImGuiDir_Right);
@@ -131,6 +340,12 @@ void VisualSequenceGraph::ShowToolbar()
     if (ImGui::Button("Zoom to Content"))
     {
         ed::NavigateToContent();
+    }
+    ImGui::SameLine();
+
+    if (ImGui::Button("Run"))
+    {
+        RunGraph();
     }
 
 
@@ -268,6 +483,17 @@ void VisualSequenceGraph::DrawBlueprintNodes()
             }
             ImGui::PopStyleVar();
             builder.EndInput();
+        }
+
+        // ImageOutput 노드: 처리 결과를 노드 본문에 인라인 미리보기로 표시.
+        // 입력[0].ImageValue 는 RunGraph 평가 시 채워지며 다음 Run 까지 유지된다.
+        if (node->Op == NodeOp::ImageOutput &&
+            node->Inputs.empty() == false &&
+            node->Inputs[0].ImageValue &&
+            node->Inputs[0].ImageValue->SRV)
+        {
+            builder.Middle();
+            ImGui::Image(reinterpret_cast<ImTextureID>(node->Inputs[0].ImageValue->SRV.Get()), ImVec2(128, 128));
         }
 
         if (isSimple)
@@ -771,7 +997,7 @@ void VisualSequenceGraph::QueryCreateNode()
     ed::PinId startPinId = 0;
     ed::PinId endPinId = 0;
 
-    // TODO : �ߺ� ��ũ ����
+    // TODO : �ߺ� ��ũ ����
     if (ed::QueryNewLink(&startPinId, &endPinId))
     {
         Pin* startPin = VSGUtil::FindPin(_nodes, startPinId);
@@ -795,7 +1021,7 @@ void VisualSequenceGraph::QueryCreateNode()
             {
                 ed::RejectNewItem(ImColor(255, 0, 0), 2.0f);
             }
-            else if (endPin->Node.lock() == startPin->Node.lock())
+            else if (endPin->Node == startPin->Node)
             {
                 ed::RejectNewItem(ImColor(255, 0, 0), 1.0f);
             }
@@ -807,7 +1033,7 @@ void VisualSequenceGraph::QueryCreateNode()
             {
                 if (ed::AcceptNewItem(ImColor(128, 255, 128), 4.0f))
                 {
-                    _links.emplace_back(std::make_shared<Link>(Link::GetNextId(), startPinId, endPinId));
+                    _links.emplace_back(new Link(Link::GetNextId(), startPinId, endPinId));
                     _links.back()->Color = VSGUtil::GetIconColor(startPin->Type);
                 }
             }
@@ -838,9 +1064,11 @@ void VisualSequenceGraph::QueryDeleteNode()
     {
         if (ed::AcceptDeletedItem())
         {
-            auto it = std::find_if(_nodes.begin(), _nodes.end(), [nodeId](const std::shared_ptr<Node>& node) { return node->ID == nodeId; });
+            auto it = std::find_if(_nodes.begin(), _nodes.end(), [nodeId](Node* node) { return node->ID == nodeId; });
             if (it != _nodes.end())
             {
+                ReleaseNodeImages(*it);
+                delete *it;
                 _nodes.erase(it);
             }
         }
@@ -851,9 +1079,10 @@ void VisualSequenceGraph::QueryDeleteNode()
     {
         if (ed::AcceptDeletedItem())
         {
-            auto it = std::find_if(_links.begin(), _links.end(), [linkId](const std::shared_ptr<Link>& link) { return link->ID == linkId; });
+            auto it = std::find_if(_links.begin(), _links.end(), [linkId](Link* link) { return link->ID == linkId; });
             if (it != _links.end())
             {
+                delete *it;
                 _links.erase(it);
             }
         }
@@ -882,7 +1111,31 @@ void VisualSequenceGraph::DrawPopup()
         //drawList->AddCircleFilled(ImGui::GetMousePosOnOpeningCurrentPopup(), 10.0f, 0xFFFF00FF);
 
         // TODO : Instantiate
-        std::shared_ptr<Node> node = nullptr;
+        Node* node = nullptr;
+
+        // 이미지 처리 노드
+        if (ImGui::MenuItem("Image Source"))
+        {
+            node = NodeGenerator::GenerateImageSourceNode();
+        }
+
+        if (ImGui::MenuItem("Grayscale"))
+        {
+            node = NodeGenerator::GenerateGrayscaleNode();
+        }
+
+        if (ImGui::MenuItem("Invert"))
+        {
+            node = NodeGenerator::GenerateInvertNode();
+        }
+
+        if (ImGui::MenuItem("Image Output"))
+        {
+            node = NodeGenerator::GenerateImageOutputNode();
+        }
+
+        ImGui::Separator();
+
         if (ImGui::MenuItem("Input Action"))
         {
             node = NodeGenerator::GenerateInputActionNode();

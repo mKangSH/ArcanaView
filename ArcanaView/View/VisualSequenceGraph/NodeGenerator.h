@@ -4,24 +4,31 @@
 class NodeGenerator
 {
 public:
-	static std::shared_ptr<Node> GenerateInputActionNode();
-	static std::shared_ptr<Node> GenerateBranchNode();
-	static std::shared_ptr<Node> GenerateDoNNode();
-	static std::shared_ptr<Node> GenerateOutputActionNode();
-	static std::shared_ptr<Node> GeneratePrintStringNode();
-	static std::shared_ptr<Node> GenerateMessageNode();
-	static std::shared_ptr<Node> GenerateSetTimerNode();
-	static std::shared_ptr<Node> GenerateLessNode();
-	static std::shared_ptr<Node> GenerateWeirdNode();
-	static std::shared_ptr<Node> GenerateTraceByChannelNode();
-	static std::shared_ptr<Node> GenerateTreeSequenceNode();
-	static std::shared_ptr<Node> GenerateTreeTaskNode();
-	static std::shared_ptr<Node> GenerateTreeTask2Node();
-	static std::shared_ptr<Node> GenerateComment();
-	static std::shared_ptr<Node> GenerateHoudiniTransformNode();
-	static std::shared_ptr<Node> GenerateHoudiniGroupNode();
+	static Node* GenerateInputActionNode();
+	static Node* GenerateBranchNode();
+	static Node* GenerateDoNNode();
+	static Node* GenerateOutputActionNode();
+	static Node* GeneratePrintStringNode();
+	static Node* GenerateMessageNode();
+	static Node* GenerateSetTimerNode();
+	static Node* GenerateLessNode();
+	static Node* GenerateWeirdNode();
+	static Node* GenerateTraceByChannelNode();
+	static Node* GenerateTreeSequenceNode();
+	static Node* GenerateTreeTaskNode();
+	static Node* GenerateTreeTask2Node();
+	static Node* GenerateComment();
+	static Node* GenerateHoudiniTransformNode();
+	static Node* GenerateHoudiniGroupNode();
 
 public:
-	static void BuildNode(std::shared_ptr<Node> node);
+	// 이미지 처리 노드
+	static Node* GenerateImageSourceNode();
+	static Node* GenerateGrayscaleNode();
+	static Node* GenerateInvertNode();
+	static Node* GenerateImageOutputNode();
+
+public:
+	static void BuildNode(Node* node);
 };
 

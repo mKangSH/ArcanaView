@@ -3,6 +3,7 @@
 namespace ed = ax::NodeEditor;
 
 struct Node;
+struct GpuImage; // 정의는 Utility/ImageProcess/GpuImageProcessor.h
 
 enum class PinType
 {
@@ -14,6 +15,18 @@ enum class PinType
     Object,
     Function,
     Delegate,
+    Image,
+};
+
+// 노드가 수행하는 이미지 처리 연산 식별자 (시각적 NodeType 과는 별개).
+// None 인 노드는 평가기에서 무시된다 (기존 데모 노드).
+enum class NodeOp
+{
+    None,
+    ImageSource,
+    Grayscale,
+    Invert,
+    ImageOutput,
 };
 
 enum class PinKind
@@ -36,10 +49,15 @@ struct Pin
 	ed::PinId ID;
     std::string Name;
 
-    std::weak_ptr<Node> Node;
+    Node* Node = nullptr; // 소유하지 않는 부모 노드 역참조
 
     PinType Type;
     PinKind Kind;
+
+    // 평가 시 핀이 운반하는 런타임 값 (그래프 실행 중에만 채워짐).
+    // 출력 핀이 GpuImage 를 소유하고, 입력 핀은 빌려쓰기만 한다(소유하지 않음).
+    GpuImage* ImageValue = nullptr;
+    float ScalarValue = 0.0f;
 
     Pin(uint64 id, std::string name, PinType type)
         : ID(id), Name(name), Type(type), Kind(PinKind::Input)
@@ -68,6 +86,9 @@ struct Node
 
     NodeType Type;
     ImVec2 Size;
+
+    // 이미지 처리 연산 종류 (기본 None -> 평가기 무시).
+    NodeOp Op = NodeOp::None;
 
     std::string State;
     std::string SavedState;
